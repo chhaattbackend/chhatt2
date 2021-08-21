@@ -1,0 +1,383 @@
+
+        // Area One
+
+        $areas = DB::table('post_details')->get();
+        foreach ($areas as $area) {
+
+            // $minor_area_name=DB::table('post_details')->where('id',$area->post_detail_id)->first();
+            // $major_area_name=$minor_area_name->major_area;
+            // $minor_area_name=$minor_area_name->minor_area;
+
+            $areaone = AreaOne::where('name', $area->major_area)->first();
+
+            // $areatwo=AreaTwo::where('name',$minor_area_name)->first();
+
+            if ($areaone == null) {
+                AreaOne::create([
+                    'name' => $area->major_area,
+                    'city_id' => 1
+                ]);
+            }
+        }
+        AreaOne::create([
+                    'name' => 'Unknown Area',
+                    'city_id' => 1
+                ]);
+        dd('done');
+
+
+        // Area Two
+
+        $areas = DB::table('post_details')->get();
+        foreach ($areas as $area) {
+
+            // $minor_area_name=DB::table('post_details')->where('id',$area->post_detail_id)->first();
+            // $major_area_name=$minor_area_name->major_area;
+            // $minor_area_name=$minor_area_name->minor_area;
+
+            $areaone = AreaOne::where('name', $area->major_area)->first();
+
+            $areatwo = AreaTwo::where('name', $area->minor_area)->first();
+
+
+            AreaTwo::create([
+                'name' => $area->minor_area,
+                'area_one_id' => $areaone->id
+            ]);
+        }
+        dd('done');
+
+
+        // Clients
+
+
+        $clients = DB::table('clients')->get();
+        foreach ($clients as $client) {
+            // $check=User::where('email',$client->email)->first();
+            // if($check==null){
+            User::create([
+                'name' => $client->name,
+                'email' => $client->email,
+                'password' => Hash::make('password'),
+                'phone' => $client->phone,
+                'thumbnail' => $client->thumbnail,
+                'firebase_id' => $client->u_id,
+                'role_id' => 4
+            ]);
+            // }
+        }
+        dd('done');
+
+        // Agencies
+
+        $agencies = DB::table('agencies1')->get();
+        foreach ($agencies as $agency) {
+            $email = strtolower(str_ireplace(' ', '-', $agency->name));
+            // dd();
+            $name = $agency->o_name;
+            if ($name == null) {
+                $name = $agency->name;
+            }
+            $user = User::create([
+                'name' => $name,
+                'mobile' => $agency->o_contact,
+                'address' => $agency->address,
+                'latitude' => $agency->latitude,
+                'longitude' => $agency->longitude,
+                'status' => $agency->status,
+                'thumbnail' => $agency->thumbnail,
+                'role_id' => 2,
+                'phone' => $agency->phone,
+                'email' => $email . '@chhatt.com',
+                'password' => Hash::make('password'),
+
+            ]);
+
+            $agency1 = Agency::create([
+                'name' => $agency->name,
+
+                'user_id' => $user->id,
+                'major_area' => $agency->major_area,
+                'minor_area' => $agency->minor_area,
+                'location' => $agency->location,
+                'verified' => $agency->verified,
+                'status' => $agency->status,
+
+            ]);
+            // dd('done');
+
+        }
+        dd('done');
+
+        // Agents
+
+        $agents1 = DB::table('agents1')->get();
+        foreach ($agents1 as $agent) {
+
+            $office = DB::table('agencies1')->where('id', $agent->office_id)->first();
+            if ($office != null) {
+                $agency = Agency::where('name', $office->name)->first();
+                $user = User::where('phone', $agent->phone)->first();
+                if ($user != null && $agency != null) {
+                    // dd($agent->phone);
+                    // dd($agency->id);
+                    // dd($user->id);
+                    Agent::create([
+                        'agency_id' => $agency->id,
+                        'user_id' => $user->id,
+                        'position_id' => $user->role_id
+                    ]);
+                }
+            }
+        }
+        dd('done');
+
+        // Properties
+
+        $a = 0;
+        $chatprop = DB::table('posts')->get();
+        foreach ($chatprop as $property) {
+            // user_id
+            $client = DB::table('clients')->where('id', $property->client_id)->first();
+            if ($client != null) {
+                $user = User::where('phone', $client->phone)->first();
+                // area_one_id
+                if ($property->post_detail_id != null) {
+                    $post_detail = DB::table('post_details')->where('id', $property->post_detail_id)->first();
+                    if ($post_detail != null) {
+                        $area_one = AreaOne::where('name', $post_detail->major_area)->first();
+                        if ($area_one != null) {
+                            $area_two = AreaTwo::where('area_one_id', $area_one->id)->where('name', $post_detail->minor_area)->first();
+                            if ($area_two == null) {
+                                $a++;
+                            }
+                        }
+                        // dd($area_one);
+                        // dd($area_two);
+                        if ($area_one != null && $area_two != null) {
+                            $property1 = Property::create([
+                                'user_id' => $user->id,
+                                'area_one_id' => $area_one->id,
+                                'area_two_id' => $area_two->id,
+                                'address' => $property->address,
+                                'price' => $property->price,
+                                'size' => $property->plt,
+                                'size_type' => $property->squ,
+                                'type' => $property->p_type,
+                                'bed' => $property->bed,
+                                'bath' => $property->bath,
+                                'description' => $property->p_for,
+                                'category' => $property->cat_id,
+                                'priority' => 3,
+                                'advertised' => 0,
+                                'images' => $property->thumbnail,
+                                'longitude' => $property->longitude,
+                                'latitude' => $property->latitude,
+
+                            ]);
+                            PropertySocial::create([
+                                'property_id' => $property1->id,
+                                'clicks' => $property->post_click,
+                                'likes' => $property->likes,
+                                'views' => $property->views,
+
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+        dd('done');
+
+        //Property Images
+
+
+
+        Property::where('bed', 'null')->update(['bed' => null]);
+        Property::where('bed', 'null')->update(['bed' => null]);
+
+        dd('done');
+
+
+        // updating users to agents
+
+        $agents = Agent::all();
+        foreach ($agents as $agent) {
+            User::where('id', $agent->user_id)->where('role_id', 4)->update([
+                'role_id' => 3
+            ]);
+        }
+
+        // leads
+
+        $oldleads = \DB::table('leads11')->get();
+        foreach ($oldleads as $oldlead) {
+
+            Lead::create([
+
+                'project_id' => $oldlead->project_id,
+                'name' => $oldlead->name,
+                'phone' => $oldlead->phone,
+                'email' => $oldlead->email,
+                'description' => $oldlead->description,
+                'area' => $oldlead->area,
+                'budget' => $oldlead->budget,
+                'type' => $oldlead->lead_type,
+                'how_soon' => $oldlead->how_soon,
+                'family' => $oldlead->family_members,
+                'property_type' => $oldlead->property_type,
+                'leadsource' => $oldlead->leadsource,
+                'status' => $oldlead->lead_status,
+                'call_status' => $oldlead->call_status,
+                'response_status' => $oldlead->response_status,
+                'created_by' => $oldlead->created_by,
+            ]);
+        }
+
+        // assigning leads to projects
+
+
+        $leads = Lead::all();
+        foreach ($leads as $lead) {
+            if ($lead->project_id != null) {
+                if ($lead->project_id == 4) {
+                    LeadProject::create([
+                        'lead_id' => $lead->id,
+                        'project_id' => 2
+                    ]);
+                } else {
+                    LeadProject::create([
+                        'lead_id' => $lead->id,
+                        'project_id' => 1
+                    ]);
+                }
+            }
+        }
+
+        dd('done');
+
+        // updating agency areas
+        $agencies = Agency::all();
+        foreach ($agencies as $agency) {
+            $areaone = AreaOne::where('name', $agency->major_area)->first();
+            if ($areaone != null) {
+                $areatwo = AreaTwo::where('name', $agency->minor_area)->where('area_one_id', $areaone->id)->first();
+            }
+            if ($areaone != null && $areatwo != null) {
+                Agency::where('id', $agency->id)->update([
+                    'area_one_id' => $areaone->id,
+                    'area_two_id' => $areatwo->id,
+
+                ]);
+            }
+        }
+        dd('done');
+
+
+
+        $users = User::all();
+        foreach ($users as $key => $user) {
+            $image = str_ireplace('https://chhatt.com/backend/admin/public/img/clients/', '', $user->thumbnail);
+            User::where('id', $user->id)->update(['thumbnail' => $image]);
+        }
+
+
+
+        $leads = Lead::all();
+        foreach ($leads as $lead) {
+            $area = AreaOne::where('name', 'LIKE', '%' . $lead->area . '%')->first();
+            if ($lead->area == null || $area == null) {
+                $area = AreaOne::where('name', 'Unknown Area')->first();
+            }
+            Lead::where('id', $lead->id)->update(['area_one_id' => $area->id]);
+        }
+        dd('done');
+
+        // updating lat long in agencies
+
+        $agenciesold = DB::table('agencies1')->get();
+        foreach ($agenciesold as $agency) {
+            Agency::where('name', $agency->name)->update([
+                'latitude' => $agency->latitude,
+                'longitude' => $agency->longitude
+
+            ]);
+        }
+
+
+        $string = 'https://chhatt.com/backend/admin/public/img/properties/';
+
+        $properties = Property::all();
+        foreach ($properties as $property) {
+            Property::where('id', $property->id)->update(['images' => str_ireplace($string, '', $property->images)]);
+        }
+
+        $string = 'umair';
+
+        $properties = Property::all();
+        foreach ($properties as $property) {
+            Property::where('id', $property->id)->update(['images' => str_ireplace($string, ',', $property->images)]);
+        }
+
+        $string = 'https://www.chhatt.com/StaticMap/';
+
+        $properties = Property::all();
+        foreach ($properties as $property) {
+            Property::where('id', $property->id)->update(['images' => str_ireplace($string, 'StaticMap/', $property->images)]);
+        }
+
+
+        $properties = Property::all();
+        foreach ($properties as $property) {
+            // $check=strpos($property->images, 'https');
+            if ($property->images != null && $property->images != 'null') {
+                $images = explode(',', $property->images);
+                $imagecount = count($images);
+                for ($i = 0; $i < $imagecount; $i++) {
+                    PropertyImage::create([
+                        'property_id' => $property->id,
+                        'name' => $images[$i],
+                        'sort_order' => $i
+                    ]);
+                }
+            }
+        }
+
+        PropertyImage::where('name', '')->delete();
+
+
+        $string = 'https://www.chhatt.com/backend/admin/public/img/properties/';
+
+        $properties = PropertyImage::all();
+        foreach ($properties as $property) {
+            PropertyImage::where('id', $property->id)->update(['name' => str_ireplace($string, '', $property->name)]);
+        }
+
+
+        $string = 'https://chhatt.com/backend/admin/public/img/static/';
+
+        $properties = PropertyImage::all();
+        foreach ($properties as $property) {
+            PropertyImage::where('id', $property->id)->update(['name' => str_ireplace($string, 'static/', $property->name)]);
+        }
+
+
+        $properties = Property::all();
+        foreach ($properties as $property) {
+            Property::where('id', $property->id)->update([
+                'property_type' => $property->description,
+                'description' => NULL
+            ]);
+        }
+
+$properties=Property::all();
+        foreach($properties as $property){
+            if ($property->user->agent != null){
+                $agency=Agency::where('id',$property->user->agent->agency->id)->first();
+
+                Property::where('id',$property->id)->update([
+                    'agency_id'=>$agency->id
+                ]);
+            }
+
+        }

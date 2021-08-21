@@ -1,0 +1,192 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::resource('users', 'API\UserController');
+Route::get('/userprofile','UserController@profile')->name('user.profile');
+Route::post('saveimage', 'API\UserController@save_image');
+Route::post('imagerotate', 'API\UserController@rotate_image');
+Route::resource('agencies', 'API\AgencyController');
+Route::resource('agentspecialities','AgentSpecialityController');
+Route::resource('agents', 'API\AgentController');
+Route::resource('areaones', 'API\AreaOneController');
+Route::resource('areatwos', 'API\AreaTwoController');
+Route::resource('areathrees', 'API\AreaThreeController');
+Route::resource('cities', 'API\CityController');
+Route::resource('leads', 'API\LeadController');
+Route::resource('leadassigns', 'API\LeadAssignController');
+Route::resource('leadprojects', 'API\LeadProjectController');
+Route::resource('leadproperties', 'API\LeadPropertyController');
+Route::resource('payments', 'API\PaymentController');
+
+// --------------------------Project Routes-------------------------------------------
+Route::resource('projects', 'API\ProjectController');
+Route::resource('projectbuyers', 'API\ProjectBuyerController');
+Route::resource('projectshops', 'API\ProjectShopController');
+Route::resource('projectsales', 'API\ProjectSaleController');
+Route::resource('projectsalesinstallments', 'API\ProjectSaleInstallmentController');
+Route::resource('projects', 'API\ProjectController');
+
+// ---------------------------End Project Routes-----------------------------------------
+
+Route::resource('properties', 'API\PropertyController');
+Route::resource('propertyimages', 'API\PropertyImageController');
+Route::get('propertyimages/delete/{id}', 'API\PropertyImageController@destroy')->name('propertyimages.delete');
+
+Route::resource('propertysocials', 'PropertySocialController');
+Route::resource('roles', 'RoleController');
+Route::resource('specialities', 'SpecialityController');
+Route::resource('states', 'StateController');
+
+//-------------------------------- Mobile Api -----------------------------------------
+
+
+Route::get('/getuser','API\MobileApiController@get_users');
+Route::get('/get/designations','API\MobileApiController@designations');
+Route::get('/get/workingspec','API\MobileApiController@workingspec');
+Route::get('/get/position','API\MobileApiController@positions');
+Route::get('/get/agency','API\MobileApiController@get_agency');
+
+//------------------done---------
+
+
+Route::post('/register','API\MobileApiController@client_reg');
+Route::post('/create/post','API\MobileApiController@new_post');
+
+
+Route::get('/get/properties','API\MobileApiController@get_pro');
+Route::get('/likes/{u_id}/{p_id}','API\MobileApiController@pro_likes');
+Route::get('/views/{u_id}/{p_id}','API\MobileApiController@pro_views');
+Route::get('/eng/{u_id}/{p_id}','API\MobileApiController@pro_eng');
+
+
+Route::get('/get/count/{p_id}','API\MobileApiController@get_count');
+Route::get('/get/likes/list/{p_id}','API\MobileApiController@get_likes_list');
+Route::get('/get/views/list/{p_id}','API\MobileApiController@views_list');
+
+Route::get('/get/eng/list/{p_id}','API\MobileApiController@get_eng_list');
+Route::get('/get/profile/{u_id}','API\MobileApiController@profile');
+Route::get('/get/same/{d_id}','API\MobileApiController@same_desg');
+Route::get('/get/properties/','API\MobileApiController@get_pro');
+
+Route::post('dummy','API\MobileApiController@dummy');
+Route::get('/get/clients/','API\MobileApiController@dummyy');
+Route::post('get/post/{id/1/2/3/4}','API\MobileApiController@showbyid');
+
+Route::get('/get/sea','API\MobileApiController@sea');
+
+Route::post('/search','API\MobileApiController@search');
+Route::get('/get/approved/agent','API\MobileApiController@a_agent');
+Route::post('/get/data','API\MobileApiController@s_Data');
+Route::get('/get/properties/{user_id}','API\MobileApiController@m_post');
+Route::get('/properties/likes/{p_id}','API\MobileApiController@u_likes');
+Route::post('/post/upload','API\MobileApiController@upload');
+Route::post('/get/pid','API\MobileApiController@pid');
+Route::post('/file/upload','API\MobileApiController@file');
+Route::get('/get/workspec','API\MobileApiController@workingspec');
+Route::post('/get/user/profile','API\MobileApiController@getname');
+Route::post('/post/status','API\MobileApiController@getstat');
+Route::get('/get/propid/{id}','API\MobileApiController@propid');
+Route::get('get/chkid','API\MobileApiController@chk_id');
+Route::get('/get/agent/data/{office_id}','API\MobileApiController@ag_data');
+Route::get('get/maps','API\MobileApiController@maps');
+Route::get('get/sub','API\MobileApiController@sub');
+Route::get('get/agencies','API\MobileApiController@agencies');
+Route::get('get/actioncheck','API\MobileApiController@actioncheck');
+Route::get('get/list/maps','API\MobileApiController@listmaps');
+Route::post('post/reward','API\MobileApiController@reward');
+Route::get('get/area_cat','API\MobileApiController@area_cat');
+Route::get('get/plot_cat','API\MobileApiController@plot_cat');
+Route::get('get/plot_detail','API\MobileApiController@plot_det');
+Route::post('post/mob_data','API\MobileApiController@mob_data');
+Route::get('get/posted','API\MobileApiController@posted');
+Route::get('get/post/details','API\MobileApiController@postbyid');
+Route::post('post/postedit/{id}','API\MobileApiController@postEdit');
+Route::get('agency/search','API\MobileApiController@globsearch');
+Route::get('agency/verify','API\MobileApiController@AgencyVerf');
+Route::get('delete/post','API\MobileApiController@Softdelete');
+Route::get('set/office','API\MobileApiController@setoffice');
+Route::get('search/speciality','API\MobileApiController@SearchSpec');
+Route::get('map/search','API\MobileApiController@globsearchmap');
+Route::get('add/majorminor','API\MobileApiController@MajMinor');
+Route::post('upload/pdf','API\MobileApiController@pdf');
+Route::post('post/getvaluation','API\MobileApiController@getvaluation');
+Route::get('post/return','API\MobileApiController@post_return');
+Route::get('get/paginated/properties','API\MobileApiController@get_paginated_pro');
+Route::get('get/agency/temporary','API\MobileApiController@temporary');
+Route::get('update/up_postdetails','API\MobileApiController@up_postdetails');
+Route::post('ui/post/edit/{id}','API\MobileApiController@UIpostEdit');
+Route::get('ui/post/get','API\MobileApiController@UIgetpost');
+Route::get('ui/postdetail/get','API\MobileApiController@UIgetpostdetail');
+Route::post('ui/create/postdetail','API\MobileApiController@UIcreatePostdetail');
+Route::get('post/click/{id}','API\MobileApiController@post_click');
+Route::get('get/post/marker','API\MobileApiController@post_marker');
+Route::get('get/related/post','API\MobileApiController@relatedPostOnApp');
+Route::get('get/first/imagepost','API\MobileApiController@FirstImagePost');
+Route::get('get/post/majorminor','API\MobileApiController@post_majorminor');
+Route::get('get/attributes/count','API\MobileApiController@allcount');
+Route::get('get/postdetail/majorminor','API\MobileApiController@postdetail_majorminor');
+Route::get('get/post/allmarker','API\MobileApiController@post_allmarker');
+Route::get('get/agents/lead','API\MobileApiController@AgentsLead');
+Route::get('get/marker/search','API\MobileApiController@WebSearch');
+Route::get('get/all/cities','API\MobileApiController@allPostCities');
+Route::get('get/cities/majorminor','API\MobileApiController@PostDetailByCity');
+Route::get('get/post/sold','API\MobileApiController@PostSold');
+Route::get('get/hacked','API\MobileApiController@hack');
+Route::get('get/post_detail/major','API\MobileApiController@post_details_major');
+Route::get('agency/for/msg','API\MobileApiController@agencyformsg');
+
+//React UI
+Route::get('get/latlong','API\MobileApiController@latlong');
+Route::get('post/nearprop','API\MobileApiController@nearprop');
+Route::get('get/allareas','API\MobileApiController@allareas');
+Route::get('get/arealist','API\MobileApiController@agencyarea');
+Route::get('get/postcard','API\MobileApiController@postcard');
+Route::get('get/postdetails/{id}','API\MobileApiController@postdetail');
+Route::get('get/relatedpost','API\MobileApiController@relatedPost');
+Route::get('get/uimaps','API\MobileApiController@UImaps');
+Route::get('get/agencydetails','API\MobileApiController@get_agency_details');
+Route::get('get/allmaps/{id}','API\MobileApiController@Mapbyid');
+Route::get('get/staticmap','API\MobileApiController@staticmap');
+Route::get('get/user/properties','API\MobileApiController@user_properties');
+Route::get('get/updatemethod','API\MobileApiController@updatemethod');
+Route::get('get/reltor_agencies','API\MobileApiController@getagents');
+
+
+
+//Akash new APIs
+Route::get('get/agencies/search', 'API\MobileApiController@globalSearch');
+Route::get('get/user/search', 'API\MobileApiController@userSearch');
+Route::get('get/city/count', 'API\MobileApiController@cityCount');
+Route::get('/agents/test', 'AgentController@test');
+Route::get('/salesagents/test', 'SalesAgentController@test');
+Route::get('searchproperties', 'Api\PostDetailController@index');
+Route::resource('leads', 'Api\LeadController');
+
+
+//Lead Post
+Route::post('post/leads', 'API\MobileApiController@Postleads');
+Route::post('post/leadsattention', 'API\MobileApiController@leadsattention');
+Route::post('post/call_chatstatus', 'API\MobileApiController@call_chatstatus');
+Route::post('post/leadmessage', 'LeadController@leadmessage');
+
+//AJAX
+Route::post('post/position','API\MobileApiController@ajaxreq');
+
+
