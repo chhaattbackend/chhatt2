@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="heading col-sm-6">
-                    <h1>Agencies</h1>
+                    <h1>Agency</h1>
                 </div>
                 <div class="offset-sm-4  col-sm-2">
                     @if (auth()->user()->role->name == 'Administrator')
