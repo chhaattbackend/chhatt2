@@ -102,7 +102,7 @@
                                             <option disabled selected value="">Select ID</option>
 
                                             @foreach ($agents as $agent)
-                                                <option value="{{$agent->id}}">{{$agent->user->name}} - {{$agent->agency->name}} - {{optional($agent->agency->areaOne)->name}}</option>
+                                                <option value="{{$agent->id}}">{{@$agent->user->name}} - {{@$agent->agency->name}} - {{@$agent->agency->areaOne->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
