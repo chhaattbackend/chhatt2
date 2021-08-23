@@ -214,12 +214,12 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ optional($item->user)->name }}</td>
                                 <td>
-                                    {{-- @if (optional($item->agency_id) == null)
-                                    {{ optional($item->user->agent->agency)->name }}
+                                    @if ($item->agency_id == null)
+                                    {{ @$item->user->agent->agency->name }}
                                     @else
-                                    {{ optional($item->agency)->name }}
-                                @endif --}}
-                                {{ @$item->user->agent->agency->name }}
+                                    {{ @$item->agency->name }}
+                                @endif
+                                {{-- {{ @$item->user->agent->agency->name }} --}}
                                 </td>
                                 <td>{{ optional($item->areaOne)->name }}</td>
                                 <td>{{ optional($item->areaTwo)->name }}</td>
@@ -238,7 +238,6 @@
                                 <td>{{ $item->platform }}</td>
                                 <td>{{ $item->created_at->diffForHumans() }}</td>
                                 <td>{{ $item->updated_at->diffForHumans() }}</td>
-
                                 <td>
                                     @if ($item->priority == 1)
                                         <span class="badge badge-pill badge-success superhot">Super
