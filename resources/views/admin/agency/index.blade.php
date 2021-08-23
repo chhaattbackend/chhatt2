@@ -7,9 +7,12 @@
                 <div class="heading col-sm-6">
                     <h1>Agencies</h1>
                 </div>
-                <!--<div class="offset-sm-4  col-sm-2">-->
-                <!--    <h1 class="float-sm-right"><span  style="background-image: linear-gradient(121deg, #13547a 1%, #80d0c7 250%);color: white" class="badge badge-pill">{{ $agencies->total() }}</span></h1>-->
-                <!--</div>-->
+                <div class="offset-sm-4  col-sm-2">
+                    @if (auth()->user()->role->name == 'Administrator')
+
+                    <h1 class="float-sm-right"><span  style="background-image: linear-gradient(121deg, #13547a 1%, #80d0c7 250%);color: white" class="badge badge-pill">{{ $agencies->total() }}</span></h1>
+                </div>
+                @endif
 
             </div>
         </div><!-- /.container-fluid -->
@@ -229,7 +232,7 @@
                                     <td>
                                         <a style="padding-right:10%" href="{{ route('agencies.show', $item->id ) }}" class="float-left"><i
                                             class="fas fa-eye"></i></a>
-                                        <a href="{{ route('agencies.edit', $item->id) }}" class="float-left"><i
+                                        <a style="padding-left: 10%;" href="{{ route('agencies.edit', $item->id) }}" class="float-left"><i
                                                 class="fas fa-edit"></i></a>
                                         <form action="{{ route('agencies.destroy', $item->id) }}" method="POST">
                                             @method('delete') @csrf <button class="btn btn-link pt-0"><i
@@ -242,7 +245,10 @@
                         </tbody>
                     </table>
                     <div class="align-right paginationstyle">
+                        @if (auth()->user()->role->name == 'Administrator')
+
                         {{ $agencies->links() }}
+                        @endif
                     </div>
                 </div>
             </div>

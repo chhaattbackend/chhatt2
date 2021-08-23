@@ -45,12 +45,12 @@
 
                 <style>
                     /* .filtersdiv {
-                                                                border: 1px solid;
-                                                                border-color: lightgray;
-                                                                border-radius: 100px;
-                                                                margin: 3px;
-                                                                width: 80%;
-                                                            } */
+                                                    border: 1px solid;
+                                                    border-color: lightgray;
+                                                    border-radius: 100px;
+                                                    margin: 3px;
+                                                    width: 80%;
+                                                } */
                     .filter-control {
                         display: inline;
                     }
@@ -62,14 +62,14 @@
                 </style>
 
                 <div class="filters row" style="display:none">
-                    <form action="{{ route('properties.filter') }}">
+                    <form action="{{ route('properties.filter') }}" >
                         @csrf
                         <div class="col-md-12">
 
 
                             <div class="float-left mx-3 my-3">
                                 <label>Property Type:</label><br>
-                                <select style="width : 140%" class="form-control filter-control filter-select" name="type">
+                                <select style ="width : 140%" class="form-control filter-control filter-select" name="type">
                                     <option @if (request()->get('type') == null) selected @endif value="">Select
                                     </option>
                                     <option @if (request()->get('type') == 'Residential') selected @endif value="Residential">Residential</option>
@@ -81,8 +81,7 @@
                             </div>
                             <div class="float-left mx-5 my-3">
                                 <label>Property Description:</label><br>
-                                <select style="width : 130%" class="form-control filter-control filter-select"
-                                    name="description">
+                                <select style ="width : 130%" class="form-control filter-control filter-select" name="description">
                                     <option @if (request()->get('description') == null) selected @endif value="">Select
                                     </option>
                                     <option @if (request()->get('description') == 'For Sale') selected @endif value="For Sale">For Sale</option>
@@ -95,8 +94,7 @@
 
                             <div class="float-left mx-3 my-3">
                                 <label>Major Area:</label><br>
-                                <select style="width : 140%" class="form-control filter-control filter-select"
-                                    name="area_one_id">
+                                <select style ="width : 140%" class="form-control filter-control filter-select" name="area_one_id">
                                     <option @if (request()->get('area_one_id') == null) selected @endif value="">Select
                                     </option>
                                     @foreach ($area_one as $item)
@@ -111,8 +109,7 @@
 
                             <div class="float-left mx-4 my-3">
                                 <label>Minor Area:</label><br>
-                                <select style="width : 140%" class="form-control filter-control filter-select"
-                                    name="area_two_id">
+                                <select style ="width : 140%" class="form-control filter-control filter-select" name="area_two_id">
                                     <option @if (request()->get('area_two_id') == null) selected @endif value="">Select
                                     </option>
                                     @foreach ($area_two as $item)
@@ -126,8 +123,7 @@
                             </div>
                             <div class="float-left mx-3 my-3">
                                 <label> Structured:</label><br>
-                                <select style="width: 129%" class="form-control filter-control filter-select"
-                                    name="structured">
+                                <select style="width: 129%"  class="form-control filter-control filter-select" name="structured">
                                     <option @if (request()->get('structured') == null) selected @endif value="">Select
                                     </option>
                                     <option @if (request()->get('structured') == '1') selected @endif value="1">Active</option>
@@ -186,7 +182,6 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <!--<th>Image Exist</th>-->
                             <th>User</th>
                             <th>Agency</th>
                             <th>Area</th>
@@ -202,6 +197,7 @@
                             <th>Bath</th>
                             <th>images</th>
                             {{-- <th>Description</th> --}}
+                            <th>progress</th>
                             <th>Platform</th>
                             <th>Created At</th>
                             <th>Updated At</th>
@@ -216,14 +212,14 @@
                         @forelse ($properties as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
-                               
-
-
                                 <td>{{ optional($item->user)->name }}</td>
                                 <td>
-                                    @if (optional($item->user)->agent != null)
-                                        {{ optional($item->user->agent->agency)->name }}
+                                    @if (optional($item->agency_id) == null)
+                                        {{ optional($item->user->agency)->name }}
+                                        @else
+                                        {{ optional($item->agency)->name }}
                                     @endif
+
                                 </td>
                                 <td>{{ optional($item->areaOne)->name }}</td>
                                 <td>{{ optional($item->areaTwo)->name }}</td>
@@ -238,6 +234,7 @@
                                 <td>{{ $item->bed }}</td>
                                 <td>{{ $item->bath }}</td>
                                 <td>{{ count($item->images) }}</td>
+                                <td>{{ @$item->progress }}</td>
                                 <td>{{ $item->platform }}</td>
                                 <td>{{ $item->created_at->diffForHumans() }}</td>
                                 <td>{{ $item->updated_at->diffForHumans() }}</td>

@@ -87,12 +87,6 @@ class AgentController extends Controller
         return view('admin.agent.index', compact('agents', 'area_one', 'area_two'));
     }
 
-
-
-
-
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -117,14 +111,24 @@ class AgentController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency'){
+        $this->validate($request,[
+            'user_id' => 'required',
+            'agency_id' => 'required',
+            'areas' => 'min:1',
+            'speciality' => 'min:1',
+            ]);
+
         $agent = Agent::create($request->all());
 
         // dd($request->all());
-        foreach ($request->speciality as $speciality) {
-            AgentSpeciality::create([
-                'agent_id' => $agent->id,
-                'speciality_id' => $speciality
-            ]);
+        if ($request->speciality != null) {
+            foreach ($request->speciality as $speciality) {
+                AgentSpeciality::create([
+                    'agent_id' => $agent->id,
+                    'speciality_id' => $speciality
+                ]);
+            }
         }
 
         foreach ($request->areas as $area) {
@@ -133,6 +137,7 @@ class AgentController extends Controller
                 'area_one_id' => $area
             ]);
         }
+    }
         return redirect()->route('agents.index');
     }
 
@@ -155,6 +160,7 @@ class AgentController extends Controller
      */
     public function edit($id)
     {
+
         $agent = Agent::find($id);
         $position = Position::all();
         $agency = Agency::all();
@@ -174,6 +180,8 @@ class AgentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency'){
+
         $agent = Agent::find($id)->update($request->all());
 
         AgentSpeciality::where('agent_id',$id)->delete();
@@ -204,6 +212,7 @@ class AgentController extends Controller
         } else {
             $agents->update($request->all());
         }
+    }
 
         return redirect()->route('agents.index');
     }
@@ -216,10 +225,14 @@ class AgentController extends Controller
      */
     public function destroy($id)
     {
-        // $item = Agent::find($id);
-        // $item->delete();
-        // AgentSpeciality::where('agent_id',$id)->delete();
-        // AgentArea::where('agent_id',$id)->delete();
+        if(auth()->user()->email == 'chhattofficial@chhatt.com'){
+
+
+            $item = Agent::find($id);
+            $item->delete();
+            AgentSpeciality::where('agent_id',$id)->delete();
+            AgentArea::where('agent_id',$id)->delete();
+        }
         return redirect()->back();
     }
 
