@@ -9,6 +9,7 @@ use App\Lead;
 use App\Project;
 use App\Property;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,8 +39,10 @@ class HomeController extends Controller
         $projects=Project::all();
         $areas=AreaOne::paginate(10);
         $leads = Lead::orderBy('created_at','DESC')->paginate(5);
+        $property = Property::whereDate('created_at', Carbon::today())->get();
 
-        return view('home',compact('agency','agent','properties','projects','areas','general_members','leads'));
+
+        return view('home',compact('agency','agent','properties','projects','areas','general_members','leads','property'));
     }
 
     public function ajaxSearch(){

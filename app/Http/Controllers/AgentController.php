@@ -120,7 +120,7 @@ class AgentController extends Controller
             ]);
 
         $agent = Agent::create($request->all());
-
+        
         // dd($request->all());
         if ($request->speciality != null) {
             foreach ($request->speciality as $speciality) {
