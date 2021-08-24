@@ -92,7 +92,36 @@ class PropertyController extends Controller
                 $pagination = $properties->appends(array(
                     'keyword' => $request->keyword
                 ));
-            } else{
+            }
+            if (auth()->user()->role->name == 'Agents') {
+                $seacrh = $request->keyword;
+                $properties = Property::where('user_id',auth()->user()->id)->orderBy('updated_at', 'desc');
+                $properties = $properties->whereHas('user', function ($query) use ($seacrh) {
+                    $query->where('name', 'like', '%' . $seacrh . '%');
+                })->orWhereHas('user', function ($query) use ($seacrh) {
+                    $query->whereHas('agent', function ($query) use ($seacrh) {
+                        $query->whereHas('agency', function ($query) use ($seacrh) {
+                            $query->where('name', 'like', '%' . $seacrh . '%');
+                        });
+                    });
+                })->orWhereHas('areaOne', function ($query) use ($seacrh) {
+                    $query->where('name', 'like', '%' . $seacrh . '%');
+                })->orWhereHas('areaTwo', function ($query) use ($seacrh) {
+                    $query->where('name', 'like', '%' . $seacrh . '%');
+                })->orWhereHas('areaThree', function ($query) use ($seacrh) {
+                    $query->where('name', 'like', '%' . $seacrh . '%');
+                })->orWhere('name', 'like', '%' . $seacrh . '%')
+                    ->orWhere('type', 'like', '%' . $seacrh . '%')
+                    ->orWhere('id', $seacrh)
+                    ->orWhere('description', 'like', '%' . $seacrh . '%')
+                    ->orWhere('progress', 'like', '%' . $seacrh . '%')
+                    ->paginate(25)->setPath('');
+
+                $pagination = $properties->appends(array(
+                    'keyword' => $request->keyword
+                ));
+            }
+            else{
                 $seacrh = $request->keyword;
                 $properties = Property::where('id', '!=', null)->orderBy('updated_at', 'desc');
                 $properties = $properties->whereHas('user', function ($query) use ($seacrh) {
@@ -155,7 +184,7 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency' ) {
+        if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency' || auth()->user()->role->name == 'Agents') {
             $request->platform = 'Web | ' . auth()->user()->email;
             $marker = 1;
             if ($request->type == 'Residential') {
@@ -272,7 +301,7 @@ class PropertyController extends Controller
     public function filter(Request $request)
     {
 
-
+        if (auth()->user()->role->name == 'Administrator' ||  auth()->user()->role->name == 'Agency') {
         $properties = Property::orderBy('created_at', 'desc')->paginate(25);
         $area_one = AreaOne::all();
         $area_two = AreaTwo::all();
@@ -310,7 +339,7 @@ class PropertyController extends Controller
             'area_one_id' => $request->area_one_id,
             'structured' =>  $request->structured,
         ));
-
+    }
         return view('admin.property.index', compact('properties', 'area_one', 'area_two'));
     }
 
