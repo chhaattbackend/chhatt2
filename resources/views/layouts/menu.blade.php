@@ -14,7 +14,6 @@
     </a>
 </li>
 
-
 <li
     class="nav-item has-treeview  @if(url()->current()==route('users.index') || url()->current()==route('users.create')) menu-open @endif">
     <a href="#" class="nav-link">
@@ -43,6 +42,7 @@
     </ul>
 </li>
 @endif
+@if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency')
 <li
     class="nav-item has-treeview @if(url()->current()==route('agencies.index') || url()->current()==route('agencies.create')) menu-open @endif">
     <a href="#" class="nav-link">
@@ -70,6 +70,7 @@
 
     </ul>
 </li>
+@endif
 @if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency')
 <li class="nav-item has-treeview ">
     <a href="#" class="nav-link">
@@ -644,8 +645,8 @@
 </li>
 @endif
 
-@if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency')
-@if (auth()->user()->role->name == 'Agency')
+@if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency' || auth()->user()->role->name == 'Agents' )
+@if (auth()->user()->role->name == 'Agency' || auth()->user()->role->name == 'Agents')
 </ul>
 @endif
 <li
@@ -679,7 +680,6 @@
                 <p>By Parent</p>
             </a>
         </li>
-
     </ul>
 </li>
 @endif

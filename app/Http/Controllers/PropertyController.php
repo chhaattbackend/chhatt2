@@ -56,11 +56,14 @@ class PropertyController extends Controller
                 $agents = Agent::select('user_id')->where('agency_id',auth()->user()->agency->id)->get();
                 $properties = Property::whereIn('user_id',$agents)->orderBy('created_at', 'desc')->paginate(25);
                 // $properties = Property::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(25);
-            } else {
+            }
+            if (auth()->user()->role->name == 'Agents') {
+                $properties = Property::where('user_id',auth()->user()->id)->paginate(25);
+            }
+             else {
                 $properties = Property::orderBy('created_at', 'desc')->paginate(25);
             }
         } else {
-
             if (auth()->user()->role->name == 'Agency') {
                 $seacrh = $request->keyword;
                 $properties = Property::where('agency_id', auth()->user()->agency->id)->orderBy('updated_at', 'desc');
@@ -92,7 +95,6 @@ class PropertyController extends Controller
             } else{
                 $seacrh = $request->keyword;
                 $properties = Property::where('id', '!=', null)->orderBy('updated_at', 'desc');
-
                 $properties = $properties->whereHas('user', function ($query) use ($seacrh) {
                     $query->where('name', 'like', '%' . $seacrh . '%');
                 })->orWhereHas('user', function ($query) use ($seacrh) {
@@ -113,7 +115,6 @@ class PropertyController extends Controller
                     ->orWhere('description', 'like', '%' . $seacrh . '%')
                     ->orWhere('progress', 'like', '%' . $seacrh . '%')
                     ->paginate(25)->setPath('');
-
                 $pagination = $properties->appends(array(
                     'keyword' => $request->keyword
                 ));
