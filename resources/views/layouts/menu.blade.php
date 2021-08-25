@@ -43,7 +43,7 @@
     </ul>
 </li>
 @endif
-@if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency')
+@if (auth()->user()->role->name == 'Administrator' )
 <li
     class="nav-item has-treeview @if(url()->current()==route('agencies.index') || url()->current()==route('agencies.create')) menu-open @endif">
     <a href="#" class="nav-link">
@@ -61,13 +61,13 @@
                 <p>List</p>
             </a>
         </li>
-        {{-- <li class="nav-item">
+        <li class="nav-item">
             <a href="{{ route('agencies.create') }}" class="nav-link">
                 <i
                     class="far fa-circle nav-icon @if(url()->current()==route('agencies.create')) far fa-dot-circle  red @endif"></i>
                 <p>Create</p>
             </a>
-        </li> --}}
+        </li>
 
     </ul>
 </li>
