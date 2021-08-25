@@ -175,10 +175,12 @@
                                     </div>
                                 </div>
                             </form>
-
+                            @if (auth()->user()->role->name == 'Administrator')
                             <a href="{{ route('agencies.create') }}"><button type="button"
                                     class="btn btn-primary rounded-pill rounded-bill">Add
                                     Agency</button></a>
+
+                                    @endif
                         </div>
                     </div>
 

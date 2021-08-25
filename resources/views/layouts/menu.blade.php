@@ -61,13 +61,13 @@
                 <p>List</p>
             </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a href="{{ route('agencies.create') }}" class="nav-link">
                 <i
                     class="far fa-circle nav-icon @if(url()->current()==route('agencies.create')) far fa-dot-circle  red @endif"></i>
                 <p>Create</p>
             </a>
-        </li>
+        </li> --}}
 
     </ul>
 </li>

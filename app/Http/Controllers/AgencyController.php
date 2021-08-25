@@ -29,7 +29,7 @@ class AgencyController extends Controller
     {
         if (!$request->keyword) {
             if (auth()->user()->role->name == 'Agents' || auth()->user()->role->name == 'Agency') {
-                $agencies = Agency::where('id', auth()->user()->agency->id)->get();
+                $agencies = Agency::where('id', auth()->user()->agency->id)->paginate(10);
                 $area_one = AreaOne::all();
                 $area_two = AreaTwo::all();
             } else {
