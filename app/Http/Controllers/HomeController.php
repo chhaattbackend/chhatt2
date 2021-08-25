@@ -32,6 +32,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if(auth()->user()->role->name == 'Agency' || auth()->user()->role->name == 'Agents' ){
+            return redirect()->route('properties.index');
+        }
         $agency=Agency::count();
         $agent=Agent::count();
         $general_members=User::where('role_id',4)->count();
