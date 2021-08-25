@@ -164,7 +164,18 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        $users = User::all();
+        if (auth()->user()->role->name == 'Agency') {
+            $agents = Agent::select('user_id')->where('agency_id', auth()->user()->agency->id)->get();
+            $users = User::whereIn('id', $agents)->get();
+        }
+        if (auth()->user()->role->name == 'Agents') {
+
+            $users = User::where('id', auth()->user()->id)->get();
+        }
+        if (auth()->user()->role->name == 'Administrator') {
+
+            $users = User::all();
+        }
         $city = City::all();
         $area_one = AreaOne::all();
         $area_two = AreaTwo::all();
@@ -301,14 +312,14 @@ class PropertyController extends Controller
     public function filter(Request $request)
     {
         if (auth()->user()->role->name == 'Administrator' ||  auth()->user()->role->name == 'Agency') {
-            if( auth()->user()->role->name == 'Agency'){
+            if (auth()->user()->role->name == 'Agency') {
                 $agents = Agent::select('user_id')->where('agency_id', auth()->user()->agency->id)->get();
                 $properties = Property::whereIn('user_id', $agents)->orderBy('created_at', 'desc');
             }
             if (auth()->user()->role->name == 'Agents') {
                 $properties = Property::where('user_id', auth()->user()->id)->paginate(25);
             }
-            if(auth()->user()->role->name == 'Administrator'){
+            if (auth()->user()->role->name == 'Administrator') {
                 $properties = Property::orderBy('created_at', 'desc')->paginate(25);
             }
             $area_one = AreaOne::all();

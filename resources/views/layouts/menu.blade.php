@@ -309,7 +309,9 @@
 
     </ul>
 </li>
+
 @endif
+@if (auth()->user()->role->name == 'Administrator')
 
 <li class="nav-item has-treeview">
     <a href="#" class="nav-link">
@@ -373,7 +375,7 @@
 
             </ul>
         </li>
-        @if (auth()->user()->role->name == 'Administrator')
+
         <li
             class="nav-item has-treeview @if(url()->current()==route('leadassigns.index') || url()->current()==route('leadassigns.create')) menu-open @endif">
             <a href="#" class="nav-link">
@@ -395,7 +397,6 @@
 
             </ul>
         </li>
-        @endif
         <li
             class="nav-item has-treeview @if(url()->current()==route('leadprojects.index') || url()->current()==route('leadprojects.create')) menu-open @endif">
             <a href="#" class="nav-link">
@@ -423,7 +424,6 @@
 
             </ul>
         </li>
-        @if (auth()->user()->role->name == 'Administrator')
         <li
             class="nav-item has-treeview @if(url()->current()==route('leadproperties.index') || url()->current()==route('leadproperties.create')) menu-open @endif">
             <a href="#" class="nav-link">
@@ -455,7 +455,8 @@
 
     </ul>
 </li>
-
+@endif
+@if (auth()->user()->role->name == 'Administrator')
 
 <li class="nav-item has-treeview nav-item1">
     <a href="#" class="nav-link">
@@ -646,9 +647,10 @@
 </li>
 @endif
 
-@if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency' || auth()->user()->role->name == 'Agents' )
+@if (auth()->user()->role->name == 'Administrator' || auth()->user()->role->name == 'Agency' ||
+auth()->user()->role->name == 'Agents' )
 @if (auth()->user()->role->name == 'Agency' || auth()->user()->role->name == 'Agents')
-</ul>
+
 @endif
 <li
     class="nav-item has-treeview @if(url()->current()==route('properties.index') || url()->current()==route('properties.create') || url()->current()==route('properties.by_parent')) menu-open @endif ">
@@ -674,6 +676,7 @@
                 <p>Create</p>
             </a>
         </li>
+        @if (auth()->user()->role->name == 'Administrator')
         <li class="nav-item">
             <a href="{{ route('properties.by_parent') }}" class="nav-link">
                 <i
@@ -681,6 +684,7 @@
                 <p>By Parent</p>
             </a>
         </li>
+        @endif
     </ul>
 </li>
 @endif
