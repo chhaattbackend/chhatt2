@@ -132,6 +132,16 @@
                                 </select>
                             </div>
 
+                            <div class="float-left mx-3 my-3">
+                                <label> Inventory:</label><br>
+                                <select style="width: 129%"  class="form-control filter-control filter-select" name="inventory_type">
+                                    <option @if (request()->get('structured') == null) selected @endif value="">Select
+                                    </option>
+                                    <option @if (request()->get('structured') == '1') selected @endif value="requirement">Requirement</option>
+                                    <option @if (request()->get('structured') == '0') selected @endif value="inventory">Inventory</option>
+
+                                </select>
+                            </div>
 
                         </div>
 
@@ -182,6 +192,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Inventory</th>
                             <th>User</th>
                             <th>Agency</th>
                             <th>Area</th>
@@ -212,6 +223,7 @@
                         @forelse ($properties as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ @$item->inventory_type }}</td>
                                 <td>{{ optional($item->user)->name }}</td>
                                 <td>
                                     @if ($item->agency_id == null)

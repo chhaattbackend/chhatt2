@@ -292,7 +292,7 @@ class PropertyController extends Controller
      */
     public function destroy($id)
     {
-        if (auth()->user()->email == 'chhattofficial@chhatt.com') {
+        if (auth()->user()->email == 'chhattofficial@chhatt.com' ||  auth()->user()->role->name == 'Agency') {
             $property = Property::find($id);
             $property->delete();
         }
@@ -300,16 +300,25 @@ class PropertyController extends Controller
     }
     public function filter(Request $request)
     {
-
         if (auth()->user()->role->name == 'Administrator' ||  auth()->user()->role->name == 'Agency') {
-            $properties = Property::orderBy('created_at', 'desc')->paginate(25);
+            if( auth()->user()->role->name == 'Agency'){
+                $agents = Agent::select('user_id')->where('agency_id', auth()->user()->agency->id)->get();
+                $properties = Property::whereIn('user_id', $agents)->orderBy('created_at', 'desc');
+            }
+            if (auth()->user()->role->name == 'Agents') {
+                $properties = Property::where('user_id', auth()->user()->id)->paginate(25);
+            }
+            if(auth()->user()->role->name == 'Administrator'){
+                $properties = Property::orderBy('created_at', 'desc')->paginate(25);
+            }
             $area_one = AreaOne::all();
             $area_two = AreaTwo::all();
-
             $area_one = AreaOne::orderBy('created_at', 'desc');
             $area_two = AreaTwo::orderBy('created_at', 'desc');
-            $properties = Property::orderBy('created_at', 'desc');
-
+            if (isset($request->inventory_type)) {
+                $properties = $properties->where('properties.inventory_type', $request->inventory_type);
+                // dd($properties->count());
+            }
             if (isset($request->type)) {
                 $properties = $properties->where('properties.type', $request->type);
             }
