@@ -70,6 +70,7 @@
                                 <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
                                 {{-- @if (Auth::user()->role_id == 1) --}}
                                 <span class="badge badge-pill"
+
                                     style="background-color: rgb(255, 255, 255);color: #13547a">{{ auth()->user()->role->name }}</span>
 
                             </p>
@@ -207,12 +208,12 @@ $('#area_two_id').change(function() {
             });
         });
 
-        function timerIncrement() {
-            idleTime = idleTime + 1;
-            if (idleTime > 1) {
-                alert('Message From Murar G Mandhan: Please Don\'t sit idle');
-            }
-        }
+        // function timerIncrement() {
+        //     idleTime = idleTime + 1;
+        //     if (idleTime > 1) {
+        //         alert('Message From Murar G Mandhan: Please Don\'t sit idle');
+        //     }
+        // }
     </script>
     @endif
 </body>

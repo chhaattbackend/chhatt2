@@ -12,6 +12,7 @@ use App\Agent;
 use App\Property;
 use Illuminate\Http\Request;
 
+
 class AgencyController extends Controller
 {
     /**
@@ -26,12 +27,9 @@ class AgencyController extends Controller
 
     public function index(Request $request)
     {
-
-
         if (!$request->keyword) {
             if (auth()->user()->role->name == 'Agents' || auth()->user()->role->name == 'Agency') {
-
-                $agencies = Agency::where('user_id', auth()->user()->id)->get();
+                $agencies = Agency::where('id', auth()->user()->agency->id)->get();
                 $area_one = AreaOne::all();
                 $area_two = AreaTwo::all();
             } else {
@@ -41,7 +39,6 @@ class AgencyController extends Controller
             if (auth()->user()->role->name == 'Agents' || auth()->user()->role->name == 'Agency') {
                 $seacrh = $request->keyword;
                 $agencies = Agency::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc');
-
                 $agencies = $agencies->whereHas('user', function ($query) use ($seacrh) {
                     $query->where('name', 'like', '%' . $seacrh . '%');
                 })->orWhereHas('areaOne', function ($query) use ($seacrh) {
@@ -60,7 +57,6 @@ class AgencyController extends Controller
             } else {
                 $seacrh = $request->keyword;
                 $agencies = Agency::where('id', '!=', null)->orderBy('created_at', 'desc');
-
                 $agencies = $agencies->whereHas('user', function ($query) use ($seacrh) {
                     $query->where('name', 'like', '%' . $seacrh . '%');
                 })->orWhereHas('areaOne', function ($query) use ($seacrh) {
@@ -82,10 +78,6 @@ class AgencyController extends Controller
         $area_two = AreaTwo::all();
         return view('admin.agency.index', compact('agencies', 'area_one', 'area_two'));
     }
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

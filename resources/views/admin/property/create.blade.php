@@ -165,19 +165,6 @@
                             enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
-
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Inventory Type</label>
-                                    <div class="col-sm-6">
-                                        <select  class="form-control" name="inventory_type">
-                                            <option disabled selected value="">Select Type</option>
-
-                                            <option value="requirement">Requirement</option>
-                                            <option value="inventory">Inventory</option>
-                                        </select>
-                                    </div>
-                                </div>
-
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">User</label>
                                     <div class="col-sm-6">
@@ -190,6 +177,58 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Inventory</label>
+                                    <div class="col-sm-6">
+                                        <select  class="form-control" name="inventory_type">
+                                            <option disabled selected value="">Select Type</option>
+
+                                            <option value="requirement">Requirement</option>
+                                            <option value="inventory">Inventory</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Property Type</label>
+                                    <div class="col-sm-6">
+                                        <select  class="form-control" name="type">
+                                            <option disabled selected value="">Select Type</option>
+
+                                            <option value="Residential">Residential</option>
+                                            <option value="Commercial">Commercial</option>
+                                            <option value="Industrial">Industrial</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">For</label>
+                                    <div class="col-sm-6">
+                                        <select  class="form-control" name="property_for">
+                                            <option disabled selected value="">Select Type</option>
+                                            @foreach ($propertyfor as $item)
+
+
+                                            <option value="{{$item->name}}">{{$item->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr >
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Category</label>
+                                    <div class="col-sm-6">
+                                        <select  class="form-control" name="property_type">
+                                            <option disabled selected value="">Select Type</option>
+                                            @foreach ($propertytype as $item)
+
+
+                                            <option value="{{$item->name}}">{{$item->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 {{-- <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">User ID</label>
                                     <div class="col-sm-6">
@@ -237,16 +276,6 @@
                                     </div>
                                 </div>
 
-
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-6">
-                                        <input  type="text" class="form-control" id="name" name="name"
-                                            placeholder="Enter Name">
-                                    </div>
-                                </div>
-
-
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Address</label>
                                     <div class="col-sm-6">
@@ -254,7 +283,26 @@
                                             placeholder="Enter Address" rows="4"></textarea>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="form-group row d-flex">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Size</label>
+                                    <div class="col-sm-3">
+                                        <input  type="number" class="form-control" id="name" name="size"
+                                            placeholder="Enter Size">
+                                    </div>
 
+                                        <label for="inputEmail3" class="col-sm-1 col-form-label">Size Type</label>
+                                        <div class="col-sm-2">
+                                            <select  class="form-control" name="size_type">
+                                                <option disabled selected value="">Select Size Type</option>
+
+                                                <option value="Sq.ft">Sq.ft</option>
+                                                <option value="Yards">Yards</option>
+
+                                            </select>
+                                        </div>
+
+                                </div>
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Price</label>
                                     <div class="col-sm-6">
@@ -263,13 +311,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Size</label>
-                                    <div class="col-sm-6">
-                                        <input  type="number" class="form-control" id="name" name="size"
-                                            placeholder="Enter Size">
-                                    </div>
-                                </div>
+
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Longitude</label>
                                     <div class="col-sm-6">
@@ -285,59 +327,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Type</label>
-                                    <div class="col-sm-6">
-                                        <select  class="form-control" name="type">
-                                            <option disabled selected value="">Select Type</option>
-
-                                            <option value="Residential">Residential</option>
-                                            <option value="Commercial">Commercial</option>
-                                            <option value="Industrial">Industrial</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">For</label>
-                                    <div class="col-sm-6">
-                                        <select  class="form-control" name="property_for">
-                                            <option disabled selected value="">Select Type</option>
-                                            @foreach ($propertyfor as $item)
-
-
-                                            <option value="{{$item->name}}">{{$item->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Size Type</label>
-                                    <div class="col-sm-6">
-                                        <select  class="form-control" name="size_type">
-                                            <option disabled selected value="">Select Size Type</option>
-
-                                            <option value="Sq.ft">Sq.ft</option>
-                                            <option value="Yards">Yards</option>
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Property Type</label>
-                                    <div class="col-sm-6">
-                                        <select  class="form-control" name="property_type">
-                                            <option disabled selected value="">Select Type</option>
-                                            @foreach ($propertytype as $item)
-
-
-                                            <option value="{{$item->name}}">{{$item->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
+                                    <hr>
 
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Property Social Type</label>

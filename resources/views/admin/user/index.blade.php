@@ -40,7 +40,7 @@
 
     </style>
     <div class="container-fluid">
-        <button class="btn1 info filterbtn">Filter</button>
+        {{-- <button class="btn1 info filterbtn">Filter</button> --}}
         <div class="row">
             <div class="filtersdiv">
 
@@ -62,7 +62,7 @@
 
                 </style>
 
-                <div class="filters row" style="display:none">
+                {{-- <div class="filters row" style="display:none">
                     <form action="{{ route('users.filter') }}" >
                         @csrf
                         <div class="col-md-12">
@@ -94,7 +94,7 @@
 
                         </div>
                 </div>
-                </form>
+                </form> --}}
             </div>
             <div class="col-12">
                 <div class="card searcharea">

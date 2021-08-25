@@ -22,6 +22,7 @@ class AgentController extends Controller
      */
     public function index(Request $request)
     {
+
         if (!$request->keyword) {
             if (auth()->user()->role->name == 'Agency') {
                 $agents = Agent::where('agency_id', auth()->user()->agency->id)->paginate(25);
@@ -33,8 +34,6 @@ class AgentController extends Controller
 
                 $seacrh = $request->keyword;
                 $agents = Agent::where('agency_id', auth()->user()->agency->id);
-
-
                 $agents = $agents->whereHas('user', function ($query) use ($seacrh) {
                     $query->where('name', 'like', '%' . $seacrh . '%');
                 })->orWhereHas('agency', function ($query) use ($seacrh) {
@@ -94,10 +93,16 @@ class AgentController extends Controller
      */
     public function create()
     {
-        $agents = Agent::all();
+        if(auth()->user()->role->name == 'Agency'){
+            $agents = Agent::select('user_id')->where('agency_id',auth()->user()->agency->id)->get();
+            $users = User::whereIn('id',$agents)->get();
+            $agencies = Agency::where('id',auth()->user()->agency->id)->get();
+        }else{
+            $agents = Agent::all();
+            $users = User::all();
+            $agencies = Agency::all();
+        }
         $positions = Position::all();
-        $agencies = Agency::all();
-        $users = User::all();
         $speciality = Speciality::all();
         $areas = AreaOne::all();
         return view('admin.agent.create', compact(['agents', 'positions', 'agencies', 'users', 'speciality', 'areas']));
@@ -120,7 +125,7 @@ class AgentController extends Controller
             ]);
 
         $agent = Agent::create($request->all());
-        
+
         // dd($request->all());
         if ($request->speciality != null) {
             foreach ($request->speciality as $speciality) {

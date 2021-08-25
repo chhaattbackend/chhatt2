@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Agent;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -25,29 +26,43 @@ class UserController extends Controller
         $this->globalclass = new GlobalClass;
     }
 
-    
+
     public function index(Request $request)
     {
-
         if (!$request->keyword) {
-            $users = User::orderBy('created_at', 'desc')->paginate(25);
+            if (auth()->user()->role->name == 'Agency') {
+
+                $agents = Agent::select('user_id')->where('agency_id',auth()->user()->agency->id)->get();
+                $users = User::whereIn('id',$agents)->paginate(25);
+
+            } else {
+                $users = User::orderBy('created_at', 'desc')->paginate(25);
+            }
         } else {
+            if (auth()->user()->role->name == 'Agency') {
+                $agents = Agent::select('user_id')->where('agency_id',auth()->user()->agency->id)->get();
+                $users = User::whereIn('id',$agents);
+               $users =  $users->where('name', 'like', '%' . $request->keyword . '%')
+                ->orWhere('email', 'like', '%' . $request->keyword . '%')
+                ->orWhere('id', 'like', '%' . $request->keyword . '%')
+                ->orWhere('phone', 'like', '%' . $request->keyword . '%')
+                ->orWhere('mobile', 'like', '%' . $request->keyword . '%')
+                ->paginate(25)->setPath('');
+            }
+            else{
             $users = User::where('name', 'like', '%' . $request->keyword . '%')
-            ->orWhere('email', 'like', '%' . $request->keyword . '%')
-            ->orWhere('id', 'like', '%' . $request->keyword . '%')
-            ->orWhere('phone', 'like', '%' . $request->keyword . '%')
-            ->orWhere('mobile', 'like', '%' . $request->keyword . '%')
-            ->paginate(25)->setPath('');
-
-            $pagination = $users->appends(array(
-                'keyword' => $request->keyword
-            ));
+                ->orWhere('email', 'like', '%' . $request->keyword . '%')
+                ->orWhere('id', 'like', '%' . $request->keyword . '%')
+                ->orWhere('phone', 'like', '%' . $request->keyword . '%')
+                ->orWhere('mobile', 'like', '%' . $request->keyword . '%')
+                ->paginate(25)->setPath('');
+                $pagination = $users->appends(array(
+                    'keyword' => $request->keyword
+                ));
+            }
         }
-
-
         $roles = Role::all();
-
-        return view('admin.user.index', compact(['users','roles']));
+        return view('admin.user.index', compact(['users', 'roles']));
     }
 
     /**
@@ -76,12 +91,11 @@ class UserController extends Controller
     {
         if ($request->hasFile('image')) {
             $filename = $this->globalclass->storeS3($request->file('image'), 'users');
-            User::create($request->except('password','image','dp')+['password' => Hash::make($request->password),'type'=>'property','image' => $filename,'dp' => $filename, 'thumbnail' => $filename]);
+            User::create($request->except('password', 'image', 'dp') + ['password' => Hash::make($request->password), 'type' => 'property', 'image' => $filename, 'dp' => $filename, 'thumbnail' => $filename]);
+        } else {
+            User::create($request->except('password') + ['password' => Hash::make($request->password), 'type' => 'property']);
         }
-        else{
-            User::create($request->except('password')+['password' => Hash::make($request->password),'type'=>'property']);
-        }
-        
+
         return redirect()->route('users.index');
     }
 
@@ -123,9 +137,8 @@ class UserController extends Controller
 
         if ($request->hasFile('image')) {
             $filename = $this->globalclass->storeS3($request->file('image'), 'users');
-            $user->update($request->except('password','image','dp')+['image' => $filename,'dp' => $filename, 'thumbnail' => $filename]);
-        }
-        else{
+            $user->update($request->except('password', 'image', 'dp') + ['image' => $filename, 'dp' => $filename, 'thumbnail' => $filename]);
+        } else {
             $user->update($request->all());
         }
         return redirect()->route('users.index');
@@ -143,21 +156,21 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    
 
 
-    
 
 
-    public function filter(Request $request){
 
-        $users = User::orderBy('created_at','desc');
+
+    public function filter(Request $request)
+    {
+
+        $users = User::orderBy('created_at', 'desc');
 
         $roles = Role::orderBy('created_at', 'desc');
 
         if (isset($request->role_id)) {
-            $users = $users->where('users.role_id',$request->role_id);
-
+            $users = $users->where('users.role_id', $request->role_id);
         }
         $users = $users->paginate(25);
         $roles = $roles->paginate(25);
@@ -167,8 +180,6 @@ class UserController extends Controller
 
         ));
 
-        return view('admin.user.index', compact(['users','roles']));
-
+        return view('admin.user.index', compact(['users', 'roles']));
     }
-
 }

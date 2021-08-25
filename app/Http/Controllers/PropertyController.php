@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+
 class PropertyController extends Controller
 {
     public $globalclass;
@@ -53,14 +54,14 @@ class PropertyController extends Controller
 
         if (!$request->keyword) {
             if (auth()->user()->role->name == 'Agency') {
-                $agents = Agent::select('user_id')->where('agency_id',auth()->user()->agency->id)->get();
-                $properties = Property::whereIn('user_id',$agents)->orderBy('created_at', 'desc')->paginate(25);
+                $agents = Agent::select('user_id')->where('agency_id', auth()->user()->agency->id)->get();
+                $properties = Property::whereIn('user_id', $agents)->orderBy('created_at', 'desc')->paginate(25);
                 // $properties = Property::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(25);
             }
             if (auth()->user()->role->name == 'Agents') {
-                $properties = Property::where('user_id',auth()->user()->id)->paginate(25);
+                $properties = Property::where('user_id', auth()->user()->id)->paginate(25);
             }
-             else {
+            if (auth()->user()->role->name == 'Administrator') {
                 $properties = Property::orderBy('created_at', 'desc')->paginate(25);
             }
         } else {
@@ -95,7 +96,7 @@ class PropertyController extends Controller
             }
             if (auth()->user()->role->name == 'Agents') {
                 $seacrh = $request->keyword;
-                $properties = Property::where('user_id',auth()->user()->id)->orderBy('updated_at', 'desc');
+                $properties = Property::where('user_id', auth()->user()->id)->orderBy('updated_at', 'desc');
                 $properties = $properties->whereHas('user', function ($query) use ($seacrh) {
                     $query->where('name', 'like', '%' . $seacrh . '%');
                 })->orWhereHas('user', function ($query) use ($seacrh) {
@@ -120,8 +121,7 @@ class PropertyController extends Controller
                 $pagination = $properties->appends(array(
                     'keyword' => $request->keyword
                 ));
-            }
-            else{
+            } else {
                 $seacrh = $request->keyword;
                 $properties = Property::where('id', '!=', null)->orderBy('updated_at', 'desc');
                 $properties = $properties->whereHas('user', function ($query) use ($seacrh) {
@@ -302,44 +302,44 @@ class PropertyController extends Controller
     {
 
         if (auth()->user()->role->name == 'Administrator' ||  auth()->user()->role->name == 'Agency') {
-        $properties = Property::orderBy('created_at', 'desc')->paginate(25);
-        $area_one = AreaOne::all();
-        $area_two = AreaTwo::all();
+            $properties = Property::orderBy('created_at', 'desc')->paginate(25);
+            $area_one = AreaOne::all();
+            $area_two = AreaTwo::all();
 
-        $area_one = AreaOne::orderBy('created_at', 'desc');
-        $area_two = AreaTwo::orderBy('created_at', 'desc');
-        $properties = Property::orderBy('created_at', 'desc');
+            $area_one = AreaOne::orderBy('created_at', 'desc');
+            $area_two = AreaTwo::orderBy('created_at', 'desc');
+            $properties = Property::orderBy('created_at', 'desc');
 
-        if (isset($request->type)) {
-            $properties = $properties->where('properties.type', $request->type);
+            if (isset($request->type)) {
+                $properties = $properties->where('properties.type', $request->type);
+            }
+            if (isset($request->description)) {
+                $properties = $properties->where('properties.description', $request->description);
+            }
+
+            if (isset($request->area_one_id)) {
+                $properties = $properties->where('properties.area_one_id', $request->area_one_id);
+            }
+            if (isset($request->area_two_id)) {
+                $properties = $properties->where('properties.area_two_id', $request->area_two_id);
+            }
+            if (isset($request->structured)) {
+                $properties = $properties->where('properties.structured', $request->structured);
+            }
+
+
+            $properties = $properties->paginate(25);
+            $area_one = $area_one->paginate(25);
+            $area_two = $area_two->paginate(25);
+
+            $pagination = $properties->appends(array(
+                'type' => $request->type,
+                'description' => $request->description,
+                'area_two_id' => $request->area_two_id,
+                'area_one_id' => $request->area_one_id,
+                'structured' =>  $request->structured,
+            ));
         }
-        if (isset($request->description)) {
-            $properties = $properties->where('properties.description', $request->description);
-        }
-
-        if (isset($request->area_one_id)) {
-            $properties = $properties->where('properties.area_one_id', $request->area_one_id);
-        }
-        if (isset($request->area_two_id)) {
-            $properties = $properties->where('properties.area_two_id', $request->area_two_id);
-        }
-        if (isset($request->structured)) {
-            $properties = $properties->where('properties.structured', $request->structured);
-        }
-
-
-        $properties = $properties->paginate(25);
-        $area_one = $area_one->paginate(25);
-        $area_two = $area_two->paginate(25);
-
-        $pagination = $properties->appends(array(
-            'type' => $request->type,
-            'description' => $request->description,
-            'area_two_id' => $request->area_two_id,
-            'area_one_id' => $request->area_one_id,
-            'structured' =>  $request->structured,
-        ));
-    }
         return view('admin.property.index', compact('properties', 'area_one', 'area_two'));
     }
 

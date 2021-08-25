@@ -101,7 +101,7 @@
                                     <div class="col-sm-6">
                                         <select required class="form-control" name="user_id" id="user_id">
                                             @foreach ($users as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }} - ({{ $item->phone }})</option>
+                                                <option value="{{ $item->id }}">{{ @$item->name }} - ({{ @$item->phone }})</option>
                                             @endforeach
                                         </select>
                                     </div>
