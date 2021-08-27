@@ -174,6 +174,7 @@
                                     </div>
                                 </div>
 
+
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Sub-Sub-Area</label>
                                     <div class="col-sm-6">
@@ -188,13 +189,13 @@
                                 </div>
 
 
-                                <div class="form-group row">
+                                {{-- <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control" id="name" name="name"
                                             placeholder="Enter Name" value="{{ $property->name }}">
                                     </div>
-                                </div>
+                                </div> --}}
 
 
                                 <div class="form-group row">
@@ -256,7 +257,7 @@
                                     <div class="col-sm-6">
                                         <select  class="form-control" name="social_type_id" id="social_type_id">
                                             <option disabled selected value="">Select Type</option>
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -266,7 +267,7 @@
                                     <div class="col-sm-6">
                                         <select  class="form-control" name="group_id" id="group_id">
                                             <option disabled selected value="">Select Group</option>
-                                           
+
                                         </select>
                                     </div>
                                 </div>
