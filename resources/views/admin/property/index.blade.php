@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="heading col-sm-6">
-                    <h1>Properties</h1>
+                    <h1>Properties </h1>
                 </div>
                 <div class=" offset-sm-4  col-sm-2">
                     <h1 class="float-sm-right"><span
