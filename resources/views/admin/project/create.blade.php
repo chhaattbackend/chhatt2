@@ -24,7 +24,7 @@
                             @csrf
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">User ID</label>
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">User</label>
                                     <div class="col-sm-6">
                                         <select class="form-control" name="user_id" id="user_id">
                                             @foreach ($users as $item)
@@ -54,7 +54,41 @@
                                     </div>
 
                                 </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Area</label>
+                                    <div class="col-sm-6">
+                                        <select  class="form-control" name="area_one_id" id="area_one_id">
+                                            <option disabled selected value="">Select Area</option>
+                                            @foreach ($area_one as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
 
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Sub-Area</label>
+                                    <div class="col-sm-6">
+                                        <select  class="form-control" name="area_two_id" id="area_two_id">
+                                            <option disabled selected value="">Select Sub-Area</option>
+                                            @foreach ($area_two as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Sub-Sub-Area</label>
+                                    <div class="col-sm-6">
+                                        <select  class="form-control" name="area_three_id" id="area_three_id">
+                                            <option disabled selected value="">Select Sub-Area</option>
+                                            @foreach ($area_three as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Address</label>

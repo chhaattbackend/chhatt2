@@ -57,6 +57,7 @@
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Area</th>
+                                    <th>Sub Area</th>
                                     {{-- <th>City</th> --}}
                                     <th>Owner</th>
                                     <th>Owner Contact</th>
@@ -69,7 +70,8 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->address }}</td>
-                                        <td>{{ optional($item->area_three)->name }}</td>
+                                        <td>{{ @$item->areaOne->name }}</td>
+                                        <td>{{ @$item->areaTwo->name }}</td>
                                         {{-- <td>{{ optional($item->area)->area_one->city->name }}</td> --}}
                                         <td>{{ $item->user->name }}</td>
                                         <td>{{ $item->user->phone }}</td>

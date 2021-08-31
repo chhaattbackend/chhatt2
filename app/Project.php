@@ -8,6 +8,8 @@ class Project extends Model
 {
     protected $fillable = [
         'user_id',
+        'area_one_id',
+        'area_two_id',
         'area_three_id',
         'name',
         'address',
@@ -25,12 +27,21 @@ class Project extends Model
     {
         return $this->hasMany(Lead::class, 'project_id');
     }
-    public function area_three()
+    public function areaOne()
+    {
+        return $this->belongsTo(AreaOne::class, 'area_one_id');
+    }
+    public function areaTwo()
+    {
+        return $this->belongsTo(AreaTwo::class, 'area_two_id');
+    }
+    public function areaThree()
     {
         return $this->belongsTo(AreaThree::class, 'area_three_id');
     }
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+        
     }
 }

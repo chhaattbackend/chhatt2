@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\AreaOne;
 use App\AreaThree;
+use App\AreaTwo;
 use App\Project;
 use App\User;
 use Illuminate\Http\Request;
@@ -50,15 +52,14 @@ class ProjectController extends Controller
      */
     public function create()
     {
-
-
-
+        $area_one = AreaOne::all();
+        $area_two = AreaTwo::all();
         $projects = Project::all();
         $users = User::all();
         $area_three = AreaThree::all();
 
 
-        return view('admin.project.create', compact('projects', 'users', 'area_three'));
+        return view('admin.project.create', compact('projects', 'users', 'area_three','area_one','area_two'));
     }
 
     /**
