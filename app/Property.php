@@ -64,6 +64,10 @@ class Property extends Model
     {
         return $this->hasMany(PropertyImage::class, 'property_id');
     }
+    public function image()
+    {
+        return $this->hasMany(ProjectImage::class, 'project_id');
+    }
 
     public function social(){
         return $this->hasOne(PropertySocial::class,'property_id');

@@ -61,6 +61,7 @@
                                     {{-- <th>City</th> --}}
                                     <th>Owner</th>
                                     <th>Owner Contact</th>
+                                    <th>Images</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -75,6 +76,10 @@
                                         {{-- <td>{{ optional($item->area)->area_one->city->name }}</td> --}}
                                         <td>{{ $item->user->name }}</td>
                                         <td>{{ $item->user->phone }}</td>
+                                        <td>
+                                            <a href="{{ route('projects.show', $item->id) }}" class="float-left"
+                                                style="color: green"><i class="fas fa-edit"></i>EDIT</a>
+                                        </td>
                                         <td>
 
                                             <a href="{{ route('projects.edit', $item->id) }}" class="float-left"><i

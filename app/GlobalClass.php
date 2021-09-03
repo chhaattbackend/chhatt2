@@ -119,6 +119,19 @@ class GlobalClass extends Model
             ]);
         }
     }
+    public function storeMultipleS3project($files,$path,$project_id){
+        foreach ($files as $key=>$file) {
+            $exe = $file->getClientOriginalName();
+            $filename = time() . '-' . $exe;
+            $file->storeAs($path,$filename,'s3');
+
+            ProjectImage::create([
+                'project_id'=>$project_id,
+                'name'=>$filename,
+                'sort_order'=>$key
+            ]);
+        }
+    }
 
     public function createAgencyWithUser($agency_name,$name,$mobile,$phone,$area_one_id,$area_two_id,$area_three_id,$agency_address){
         $agency_user = User::create([

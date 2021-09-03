@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\AreaOne;
 use App\AreaThree;
 use App\AreaTwo;
+use App\GlobalClass;
 use App\Project;
+use App\ProjectImage;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -17,6 +19,11 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $globalclass;
+    public function __construct()
+    {
+        $this->globalclass = new GlobalClass();
+    }
     public function index(Request $request)
     {
         if (!$request->keyword) {
@@ -70,17 +77,15 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
+        
         $filename = null;
         //$data=>array();
         $message=str_ireplace('<br />','%0A',nl2br($request->message));
-        if ($request->hasfile('image')) {
-            $image = $request->file('image');
-            $exe = $image->getClientOriginalName();
-            $filename = time() . '-' . $exe;
-            $image->move(public_path('images/projects/'), $filename);
+
+        $project = Project::create($request->except('image','message') + ['message'=>$message]);
+        if ($request->hasfile('images')) {
+            $this->globalclass->storeMultipleS3project($request->file('images'), 'projects', $project->id);
         }
-        $data = Project::create($request->except('image','message') + ['image' => $filename,'message'=>$message]);
         return redirect()->route('projects.index');
 
         // return redirect('admin/projects')->with('u_message', 'successfuly updated!');
@@ -95,7 +100,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        return view('admin.project_images.edit', compact('project'));
     }
 
     /**

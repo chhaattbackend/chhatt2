@@ -153,8 +153,7 @@
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Image</label>
                                     <div class="col-sm-6">
-                                        <input type='file' name="image" onchange="readURL(this);" />
-                                        <img id="blah" src="#" />
+                                        <input type='file'name="images[]" multiple="" />
                                     </div>
 
                                 </div>

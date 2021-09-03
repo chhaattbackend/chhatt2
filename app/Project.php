@@ -23,6 +23,10 @@ class Project extends Model
         'longitude'
     ];
 
+    public function images()
+    {
+        return $this->hasMany(ProjectImage::class, 'project_id');
+    }
     public function leads()
     {
         return $this->hasMany(Lead::class, 'project_id');
@@ -42,6 +46,6 @@ class Project extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-        
+
     }
 }

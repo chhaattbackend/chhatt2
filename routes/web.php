@@ -100,6 +100,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('projects', 'ProjectController');
     Route::get('createproject', 'LeadController@createproject')->name('leads.createproject');
     Route::post('storeproject', 'LeadController@storeproject')->name('leads.storeproject');
+    Route::resource('projectimages', 'ProjectImageController');
+    Route::get('projectimages/delete/{id}', 'ProjectImageController@destroy')->name('projectimages.delete');
+
+
 
     // ---------------------------End Project Routes-----------------------------------------
 
