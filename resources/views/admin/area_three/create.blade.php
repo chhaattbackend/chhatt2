@@ -28,7 +28,7 @@
                                     <div class="col-sm-6">
                                      <select required class="form-control" name="area_one_id" id="area_one_id">
                                         @foreach ($areaones as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                        <option value="{{$item->id}}">{{@$item->name}}</option>
                                         @endforeach
                                     </select>
                                     </div>
@@ -39,7 +39,7 @@
                                     <div class="col-sm-6">
                                      <select required class="form-control" name="area_two_id" id="area_two_id">
                                         @foreach ($areatwos as $item)
-                                        <option value="{{$item->id}}">{{$item->name}} - {{$item->area_one->name}}</option>
+                                        <option value="{{$item->id}}">{{@$item->name}} - {{@$item->area_one->name}}</option>
                                         @endforeach
                                     </select>
                                     </div>
