@@ -1,6 +1,7 @@
 <?php
 
 use App\Mail\mail;
+use App\Map;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -106,6 +107,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     // ---------------------------End Project Routes-----------------------------------------
+     // --------------------------Map Routes-------------------------------------------
+    Route::resource('maps','MapController');
+    Route::get('explode', 'MapController@explode')->name('explode');
+
+
+
+     // ---------------------------End Map Routes-----------------------------------------
 
     Route::get('properties/byparent', 'PropertyController@byParent')->name('properties.by_parent');
     Route::resource('properties', 'PropertyController');

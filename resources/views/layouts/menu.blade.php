@@ -583,6 +583,7 @@
             </ul>
         </li>
 
+
         <li
             class="nav-item has-treeview @if(url()->current()==route('projectsalesinstallments.index') || url()->current()==route('projectsalesinstallments.create')) menu-open @endif">
             <a href="#" class="nav-link">
@@ -617,6 +618,33 @@
 
 
     </ul>
+</li>
+<li
+class="nav-item has-treeview @if(url()->current()==route('maps.index') || url()->current()==route('maps.create')) menu-open @endif">
+<a href="#" class="nav-link">
+    <i class="nav-icon fas  fa-user-check"></i>
+    <p>
+        Maps
+        <i class="right fas fa-angle-left"></i>
+    </p>
+</a>
+<ul class="nav nav-treeview">
+    <li class="nav-item">
+        <a href="{{ route('maps.index') }}" class="nav-link">
+            <i
+                class="far fa-circle nav-icon @if(url()->current()==route('maps.index')) far fa-dot-circle  red @endif"></i>
+            <p>List</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('maps.create') }}" class="nav-link">
+            <i
+                class="far fa-circle nav-icon @if(url()->current()==route('maps.create')) far fa-dot-circle  red @endif"></i>
+            <p>Create</p>
+        </a>
+    </li>
+
+</ul>
 </li>
 <li
     class="nav-item has-treeview @if(url()->current()==route('projectusers.index') || url()->current()==route('projectusers.create')) menu-open @endif">
