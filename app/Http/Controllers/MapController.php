@@ -31,13 +31,14 @@ class MapController extends Controller
 
             $maps = Map::where('id', '!=', null)->orderBy('created_at', 'desc');
 
-            $maps = $maps->whereHas('area_one', function ($query) use ($seacrh) {
+            $maps = $maps->whereHas('areaOne', function ($query) use ($seacrh) {
                 $query->where('name', 'like', '%' . $seacrh . '%');
-            })->orWhereHas('area_two', function ($query) use ($seacrh) {
+            })->orWhereHas('areaTwo', function ($query) use ($seacrh) {
                 $query->where('name', 'like', '%' . $seacrh . '%');
-            })->orWhereHas('city_id', function ($query) use ($seacrh) {
+            })->orWhereHas('city', function ($query) use ($seacrh) {
                 $query->where('name', 'like', '%' . $seacrh . '%');
-            })->orWhere('name', 'like', '%' . $seacrh . '%')
+            })->orWhere('id','like','%'. $seacrh . '%')
+            ->orWhere('name', 'like', '%' . $seacrh . '%')
                 ->paginate(25)->setPath('');
 
             $pagination = $maps->appends(array(
@@ -134,6 +135,7 @@ class MapController extends Controller
         $cities = City::all();
         return view('admin.maps.edit', compact(['area_one', 'area_two', 'cities', 'maps']));
     }
+
 
     /**
      * Update the specified resource in storage.
