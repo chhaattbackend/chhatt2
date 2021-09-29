@@ -46,6 +46,16 @@ class MapController extends Controller
         }
         return view('admin.maps.index', compact('maps'));
     }
+    public function maps(Request $request)
+    {
+        $all_data = Map::all();
+        $compiled_data = array();
+        foreach ($all_data as $data) {
+            $compiled_data[$data['city']][$data['major_area']][$data['minor_area']][] =
+                [$data['location'], 'name' => $data['name'],  'thumbnail' => $data['thumbnail']];
+        }
+        return json_encode($compiled_data);
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -30,14 +30,6 @@ Route::resource('areathrees', 'API\AreaThreeController');
 Route::resource('cities', 'API\CityController');
 
 
-
-
-
-
-
-
-
-
 Route::prefix('3ACA9CFF3B54BC1B4D3F7E23214EE')->group(function () {
 
 
@@ -113,6 +105,8 @@ Route::resource('projectshops', 'API\ProjectShopController');
 Route::resource('projectsales', 'API\ProjectSaleController');
 Route::resource('projectsalesinstallments', 'API\ProjectSaleInstallmentController');
 Route::resource('projects', 'API\ProjectController');
+Route::get('get/maps','API\MapController@maps');
+
 
 
 // ---------------------------End Project Routes-----------------------------------------
