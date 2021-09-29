@@ -109,7 +109,8 @@ Route::group(['middleware' => 'auth'], function () {
     // ---------------------------End Project Routes-----------------------------------------
      // --------------------------Map Routes-------------------------------------------
     Route::resource('maps','MapController');
-    Route::get('explode', 'MapController@explode')->name('explode');
+    // Route::get('explode', 'MapController@explode')->name('explode');
+    // Route::get('change', 'MapController@changearea')->name('change');
 
 
 
