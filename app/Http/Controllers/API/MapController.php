@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\AreaOne;
 use App\Http\Controllers\Controller;
 use App\Map;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MapController extends Controller
 {
@@ -53,11 +55,18 @@ class MapController extends Controller
     }
     public function maps(Request $request)
     {
+
+
+
         $all_data = Map::all();
-        $compiled_data = array();
+        $link='https://chhatt.s3.ap-south-1.amazonaws.com/maps/';
+        $compiled_data =array();
         foreach ($all_data as $data) {
-            $compiled_data[$data['city']][$data['major_area']][$data['minor_area']][] =
-                [$data['location'], 'name' => $data['name'],  'thumbnail' => $data['thumbnail']];
+
+
+            $compiled_data[@$data->city->name]
+            [@$data->areaOne->name][@$data->areaTwo->name][] =
+                [ $data['name'], 'name' => $data['name'],  'thumbnail' => $link.$data['image']];
         }
         return json_encode($compiled_data);
     }

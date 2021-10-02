@@ -108,7 +108,6 @@ Route::resource('projects', 'API\ProjectController');
 Route::get('get/maps','API\MapController@maps');
 
 
-
 // ---------------------------End Project Routes-----------------------------------------
 
 
