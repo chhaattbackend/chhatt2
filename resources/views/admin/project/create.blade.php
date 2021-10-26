@@ -131,7 +131,7 @@
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Latitude</label>
                                     <div class="col-sm-6">
-                                        <input required type="number" class="form-control" id="latitude" name="latitude"
+                                        <input required type="float" class="form-control" id="latitude" name="latitude"
                                             placeholder="Enter Latitude">
                                     </div>
 
@@ -143,7 +143,7 @@
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-2 col-form-label">Longitude</label>
                                     <div class="col-sm-6">
-                                        <input required type="number" class="form-control" id="longitude" name="longitude"
+                                        <input required type="float" class="form-control" id="longitude" name="longitude"
                                             placeholder="Enter longitude">
                                     </div>
 
